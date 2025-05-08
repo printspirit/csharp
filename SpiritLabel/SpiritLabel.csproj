@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="spirit.so">
+    <None Include="libspirit-all.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	<None Include="libspirit.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

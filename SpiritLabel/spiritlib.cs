@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Text;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -27,7 +29,7 @@ namespace SpiritLabelLibrary
         private static extern void free(IntPtr ptr);
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SpiritEdit(string file);
+        private static extern void SpiritEdit(IntPtr file);
 
         // 静态构造函数：注册动态库解析器
         static SpiritLabel()
@@ -39,7 +41,7 @@ namespace SpiritLabelLibrary
                 {
                     // 根据操作系统选择实际文件名
                     string actualLibName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
-                        ? "spirit.dll" 
+                        ? "libspirit.dll" 
                         : "spirit.so";
                     
                     // 加载实际库文件（会自动搜索程序目录等路径）
@@ -47,7 +49,22 @@ namespace SpiritLabelLibrary
                 }
                 return IntPtr.Zero; // 其他库保持默认行为
             });
-        }
+			
+			// 初始化 Spirit
+            SpiritInit();
+			
+			//
+			// 静态构造函数，用于初始化静态类
+			AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
+			Console.CancelKeyPress += new ConsoleCancelEventHandler(OnProcessExit);
+		}
+
+		private static void OnProcessExit(object sender, EventArgs e)
+		{
+			// 进程退出时执行的清理工作
+			Console.WriteLine("Program is exiting. Performing cleanup...");
+			//SpiritDeInit();
+		}
 
         // 定义 Cmd 结构体
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -106,9 +123,7 @@ namespace SpiritLabelLibrary
         // 创建并打印
         public static void Print(string tpid, string printer, int width, int height, Dictionary<string, object> vars)
         {
-            // 初始化 Spirit
-            SpiritInit();
-
+            
             // 创建 SpiritVars 对象并将字典传递给它
             SpiritVars spiritVars = new SpiritVars(vars);
 
@@ -127,7 +142,35 @@ namespace SpiritLabelLibrary
         }
         
         public static void Design(string file) {
-            SpiritEdit(file);
+			byte[] utf8Bytes = Encoding.UTF8.GetBytes(file);
+
+			byte[] utf8BytesWithNull = new byte[utf8Bytes.Length + 1];
+			Array.Copy(utf8Bytes, utf8BytesWithNull, utf8Bytes.Length);
+			
+			// 分配非托管内存，并将字节数组复制到该内存中
+			IntPtr ptr= Marshal.AllocHGlobal(utf8BytesWithNull.Length);
+			Marshal.Copy(utf8BytesWithNull, 0, ptr, utf8BytesWithNull.Length);
+
+			// 调用 C 函数，传递非托管字符串
+			SpiritEdit(ptr);
+
+			// 释放非托管内存
+			Marshal.FreeHGlobal(ptr);
         }
+	
+		
+		/*public static void Design(string file) {
+		
+			try
+			{
+				Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
+				Console.WriteLine("文件已成功打开！");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"打开文件时出错: {ex.Message}");
+			}
+		}*/
+		
     }
 }
