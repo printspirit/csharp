@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiritLabel", "SpiritLabel\SpiritLabel.csproj", "{083B159F-DB83-4751-80E6-B2D395780807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example", "example\example.csproj", "{936C8B36-7764-4EBB-B2AE-2A9EE64B9582}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{083B159F-DB83-4751-80E6-B2D395780807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{083B159F-DB83-4751-80E6-B2D395780807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{083B159F-DB83-4751-80E6-B2D395780807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{083B159F-DB83-4751-80E6-B2D395780807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936C8B36-7764-4EBB-B2AE-2A9EE64B9582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936C8B36-7764-4EBB-B2AE-2A9EE64B9582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936C8B36-7764-4EBB-B2AE-2A9EE64B9582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936C8B36-7764-4EBB-B2AE-2A9EE64B9582}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
