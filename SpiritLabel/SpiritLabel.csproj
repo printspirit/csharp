@@ -8,7 +8,7 @@
   
   <PropertyGroup>
     <PackageId>SpiritLabel</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.5</Version>
     <Authors>PrintSpirit</Authors>
     <PackageDescription>A Label Print Tools</PackageDescription>
     <PackageTags>Label;ZPL;Barcode</PackageTags>
@@ -17,11 +17,15 @@
   
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
     <!-- Windows 平台上的 DLL -->
-    <None Include="..\..\spirit\apps\lib\libspirit-all.dll">
+    <!--None Include="..\..\spirit\apps\lib\libspirit-all.dll">
+	  <Pack>true</Pack>
+	  <PackagePath>lib\net8.0\libspirit-all.dll</PackagePath>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </None-->
 	<None Include="..\..\spirit\apps\lib\libspirit.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>true</Pack>
+	  <PackagePath>runtimes/win-x64/native/libspirit.dll</PackagePath>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
