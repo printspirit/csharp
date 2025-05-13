@@ -6,7 +6,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <!-- Windows 平台上的 DLL -->
+    <None Include="..\..\spirit\apps\lib\libspirit-all.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	<None Include="..\..\spirit\apps\lib\libspirit.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(OS)' == 'linux'">
+    <!-- Windows 平台上的 DLL -->
+    <!-- Linux 平台上的 SO -->
     <None Include="libspirit-all.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

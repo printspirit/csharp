@@ -11,7 +11,7 @@ class Program
         };
         
         var p = SpiritLabel.OpenPrinter("Spirit Image", 1200, 800);
-        p.Print("/tmp/labels/xxxx2.psl", vars);
+        p.Print("acae8013-28db-4b77-a500-1a6052633a22", vars);
         p.Close();
 
         // 调用打印接口

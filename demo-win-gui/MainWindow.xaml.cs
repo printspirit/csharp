@@ -41,8 +41,9 @@ public partial class MainWindow : Window
             { "CC", "DD" }
         };
 
-        // 调用打印接口
-        SpiritLabel.Print("xxx", "Spirit Image", 1200, 800, vars);
+        var p = SpiritLabel.OpenPrinter("Spirit Image", 1200, 800);
+        p.Print("acae8013-28db-4b77-a500-1a6052633a22", vars);
+        p.Close();
 	}
 	
 	private void Button2_Click(object sender, RoutedEventArgs e)

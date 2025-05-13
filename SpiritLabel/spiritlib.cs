@@ -95,7 +95,7 @@ namespace SpiritLabelLibrary
         // 创建并打印
         public void Print(string tpid, Dictionary<string, object> vars)
         {
-
+			Console.WriteLine("print");
             // 创建 Cmd 对象并设置参数
             Cmd c = new Cmd
             {
