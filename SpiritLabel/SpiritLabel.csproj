@@ -1,9 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <PackageId>SpiritLabel</PackageId>
+    <Version>0.0.2</Version>
+    <Authors>PrintSpirit</Authors>
+    <PackageDescription>A Label Print Tools</PackageDescription>
+    <PackageTags>Label;ZPL;Barcode</PackageTags>
   </PropertyGroup>
 
   
@@ -17,13 +25,12 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(OS)' == 'linux'">
-    <!-- Windows 平台上的 DLL -->
+  <ItemGroup Condition="'$(OS)' == 'unix'">
     <!-- Linux 平台上的 SO -->
-    <None Include="libspirit-all.so">
+    <None Include="../../spirit/apps/lib/libspirit-all.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-	<None Include="libspirit.so">
+	<None Include="../../spirit/apps/lib/libspirit.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
