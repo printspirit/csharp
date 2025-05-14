@@ -33,6 +33,15 @@ namespace SpiritLabelLibrary
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
         private static extern int ResetPrinter(string p);
+        
+        [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int SpiritInstallLicense(string key);
+        
+        [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr GetSpiritError();
+        
+        [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void SpiritFree(IntPtr p);
 
         // 静态构造函数：注册动态库解析器
         static SpiritLabel()
@@ -62,6 +71,7 @@ namespace SpiritLabelLibrary
 			Console.CancelKeyPress += new ConsoleCancelEventHandler(OnProcessExit);
 		}
 
+        #nullable disable
 		private static void OnProcessExit(object sender, EventArgs e)
 		{
 			// 进程退出时执行的清理工作
@@ -146,5 +156,27 @@ namespace SpiritLabelLibrary
 			}
 		}*/
 		
+		public static string last_error() {
+		    IntPtr ptr = GetSpiritError();
+            int length = 0;
+            while (Marshal.ReadByte(ptr, length) != 0)
+            {
+                length++;
+            }
+            byte[] utf8Bytes = new byte[length];
+            Marshal.Copy(ptr, utf8Bytes, 0, length);
+		    SpiritFree(ptr);
+		    return Encoding.UTF8.GetString(utf8Bytes);
+		}
+		
+		public static string AddLicense(string key) {
+		    if (SpiritInstallLicense(key)<0) {
+    		    var err =last_error();
+    		    Console.WriteLine($"Add License KEY={key} Error: {err}");    
+    		    return err;
+		    }
+		    return "";
+		}
+				
     }
 }
