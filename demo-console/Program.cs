@@ -4,15 +4,22 @@ class Program
 {
     static void Main()
     {
-        /*var vars = new Dictionary<string, object>
+        var vars = new Dictionary<string, object>
         {
             { "AA", "BB" },
             { "CC", "DD" }
         };
         
-        var p = SpiritLabel.OpenPrinter("Spirit Image", 1200, 800);
-        p.Print("acae8013-28db-4b77-a500-1a6052633a22", vars);
-        p.Close();*/
+        var p = SpiritLabel.OpenPrinter("Spirit Image");
+        p.size(1200, 800).quality(Qty.Hight);
+        //p.Print("acae8013-28db-4b77-a500-1a6052633a22", vars);
+        p.Print("/home/lg/文档/打印精灵/labels/xxx1.psl", vars);
+        p.Close();
+        
+        foreach (var prn in SpiritLabel.PrnLst()) {
+            Console.WriteLine(prn);
+            SpiritLabel.PrnInfo(prn.name);
+        }
 
         var err = SpiritLabel.AddLicense("0-HCAEO-2AAAF-GFWSA-5AAAA");
         Console.WriteLine(err);
