@@ -20,7 +20,9 @@ public class MainWindow : Window
         Button buttonNewLabel = new Button("新建并编辑标签");
         buttonNewLabel.Clicked += (sender, e) =>
         {
-            SpiritLabel.NewLabel("/tmp/labels/xxxx2.psl", "2111", "211", 1200, 800, 300, "/tmp/xxxx1.psl");
+            // 以/tmp/xxxx1.psl为模板创建新的标签，并编辑
+			// 标签大小为 120mm X 80mm, 打印机最佳分辨率为300DPI 
+			SpiritLabel.NewLabel("/tmp/labels/xxxx2.psl", "名称", "说明", 1200, 800, 300, "/tmp/xxxx1.psl");
             SpiritLabel.Design("/tmp/labels/xxxx2.psl");
         };
         
@@ -32,8 +34,9 @@ public class MainWindow : Window
                 { "CC", "DD" }
             };
             var p = SpiritLabel.OpenPrinter("Spirit Image", 1200, 800);
-            p.Print("/tmp/labels/xxxx2.psl", vars);
-            p.Close();
+			p.size(1200, 800);
+			p.Print("acae8013-28db-4b77-a500-1a6052633a22", vars);
+			p.Close();
         };
                 
         VBox vbox = new VBox();
