@@ -76,13 +76,13 @@ namespace SpiritLabelLibrary
         private static extern void SpiritDeInit();
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Print(string tpid, string vars, string opts);
+        private static extern int Print(string tpid, byte[] vars, byte[] opts);
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int SpiritEdit(IntPtr file);
+        private static extern int SpiritEdit(byte[] file);
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int SpiritNewLabel(string file, string name, string memo, int width, int height, int dpi, string ref_label );
+        private static extern int SpiritNewLabel(byte[] file, byte[] name, byte[] memo, int width, int height, int dpi, byte[] ref_label );
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
         private static extern int ResetPrinter(string p);
@@ -139,20 +139,33 @@ namespace SpiritLabelLibrary
 			Console.WriteLine("Program is exiting. Performing cleanup...");
 			SpiritDeInit();
 		}
-
-        // 定义 Cmd 结构体
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-        private struct Cmd
-        {
-            public string tpid;
-            public string printer;
-            public int width;
-            public int height;
-            public IntPtr vars; // 指向 KV 参数的指针
-        }
+		
+		public static string last_error() {
+		    IntPtr ptr = GetSpiritError();
+            int length = 0;
+            while (Marshal.ReadByte(ptr, length) != 0)
+            {
+                length++;
+            }
+            byte[] utf8Bytes = new byte[length];
+            Marshal.Copy(ptr, utf8Bytes, 0, length);
+		    SpiritFree(ptr);
+		    return Encoding.UTF8.GetString(utf8Bytes);
+		}
         
         public static void NewLabel(string file, string name, string memo, int width, int height, int dpi, string ref_label) {
-            SpiritNewLabel(file, name, memo, width, height, dpi, ref_label);
+			
+			
+			
+            if (SpiritNewLabel(
+					Encoding.UTF8.GetBytes(file), 
+					Encoding.UTF8.GetBytes(name), 
+					Encoding.UTF8.GetBytes(memo), 
+					width, height, dpi, 
+					Encoding.UTF8.GetBytes(ref_label))<0) {
+				var err =last_error();
+    			throw new SpiritException(err);
+			}
         }
         
         public static SpiritLabel OpenPrinter(string prn, PrinterType type) {
@@ -250,7 +263,9 @@ namespace SpiritLabelLibrary
         {
             var json_vars = JsonConvert.SerializeObject(vars);
             var json_opts = JsonConvert.SerializeObject(opts);
-			if (Print(tpid, json_vars, json_opts)<0) {
+			byte[] utf8_json_vars = Encoding.UTF8.GetBytes(json_vars);
+			byte[] utf8_json_opts = Encoding.UTF8.GetBytes(json_opts);
+			if (Print(tpid, utf8_json_vars, utf8_json_opts)<0) {
     			var err =last_error();
     			Console.WriteLine(err);
     			throw new SpiritException(err);
@@ -264,21 +279,10 @@ namespace SpiritLabelLibrary
         }
         
         public static void Design(string file) {
-			byte[] utf8Bytes = Encoding.UTF8.GetBytes(file);
-
-			byte[] utf8BytesWithNull = new byte[utf8Bytes.Length + 1];
-			Array.Copy(utf8Bytes, utf8BytesWithNull, utf8Bytes.Length);
-			
-			// 分配非托管内存，并将字节数组复制到该内存中
-			IntPtr ptr= Marshal.AllocHGlobal(utf8BytesWithNull.Length);
-			Marshal.Copy(utf8BytesWithNull, 0, ptr, utf8BytesWithNull.Length);
-
-			// 调用 C 函数，传递非托管字符串
-			SpiritEdit(ptr);
-
-			// 释放非托管内存
-			Marshal.FreeHGlobal(ptr);
-        }
+			if (SpiritEdit(Encoding.UTF8.GetBytes(file))<0) {
+				throw new SpiritException(last_error());
+			}
+		}
 	
 		
 		/*public static void Design(string file) {
@@ -293,19 +297,6 @@ namespace SpiritLabelLibrary
 				Console.WriteLine($"打开文件时出错: {ex.Message}");
 			}
 		}*/
-		
-		public static string last_error() {
-		    IntPtr ptr = GetSpiritError();
-            int length = 0;
-            while (Marshal.ReadByte(ptr, length) != 0)
-            {
-                length++;
-            }
-            byte[] utf8Bytes = new byte[length];
-            Marshal.Copy(ptr, utf8Bytes, 0, length);
-		    SpiritFree(ptr);
-		    return Encoding.UTF8.GetString(utf8Bytes);
-		}
 		
 		public static string AddLicense(string key) {
 		    if (SpiritInstallLicense(key)<0) {
