@@ -76,7 +76,7 @@ namespace SpiritLabelLibrary
         private static extern void SpiritDeInit();
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Print(string tpid, byte[] vars, byte[] opts);
+        private static extern int Print(byte[] tpid, byte[] vars, byte[] opts);
         
         [DllImport(SpiritLib, CallingConvention = CallingConvention.Cdecl)]
         private static extern int SpiritEdit(byte[] file);
