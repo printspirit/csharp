@@ -152,11 +152,9 @@ namespace SpiritLabelLibrary
 		    SpiritFree(ptr);
 		    return Encoding.UTF8.GetString(utf8Bytes);
 		}
-        
+		        
         public static void NewLabel(string file, string name, string memo, int width, int height, int dpi, string ref_label) {
-			
-			
-			
+        
             if (SpiritNewLabel(
 					Encoding.UTF8.GetBytes(file), 
 					Encoding.UTF8.GetBytes(name), 
@@ -167,6 +165,10 @@ namespace SpiritLabelLibrary
     			throw new SpiritException(err);
 			}
         }
+        
+        public static void NewLabel(string file, string name, string memo, int width, int height, int dpi) {
+		    NewLabel(file, name, memo, width, height, dpi, "");
+		}
         
         public static SpiritLabel OpenPrinter(string prn, PrinterType type) {
             var p = new SpiritLabel();
@@ -258,14 +260,15 @@ namespace SpiritLabelLibrary
             return this;
         }
 
-        // 创建并打印
+        // 打印
         public void Print(string tpid, Dictionary<string, object> vars)
         {
             var json_vars = JsonConvert.SerializeObject(vars);
             var json_opts = JsonConvert.SerializeObject(opts);
+            byte[] utf8_tpid = Encoding.UTF8.GetBytes(tpid);
 			byte[] utf8_json_vars = Encoding.UTF8.GetBytes(json_vars);
 			byte[] utf8_json_opts = Encoding.UTF8.GetBytes(json_opts);
-			if (Print(tpid, utf8_json_vars, utf8_json_opts)<0) {
+			if (Print(utf8_tpid, utf8_json_vars, utf8_json_opts)<0) {
     			var err =last_error();
     			Console.WriteLine(err);
     			throw new SpiritException(err);
