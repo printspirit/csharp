@@ -7,11 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-		
-		<!-- 第一个按钮 -->
-        <Button Name="button1" Content="执行打印" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,50,0,0" Click="Button1_Click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         
-        <!-- 第二个按钮 -->
-        <Button Name="button2" Content="打开编辑器" Width="100" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,50,0,0" Click="Button2_Click"/>
+        <!-- 下拉选择框 -->
+        <ComboBox x:Name="cmbOptions" Grid.Row="0" HorizontalAlignment="Left" Width="200"
+                  Margin="0,0,0,20">
+        </ComboBox>
+        
+        <!-- 按钮区域 -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="BtnPrint" Content="打印标签" Width="80" Margin="0,0,10,0" Click="BtnPrint_Click"/>
+            <Button x:Name="BtnEdit" Content="编辑标签" Width="80" Click="BtnEdit_Click"/>
+        </StackPanel>
+        
     </Grid>
 </Window>
