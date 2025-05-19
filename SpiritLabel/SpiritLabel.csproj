@@ -8,7 +8,7 @@
   
   <PropertyGroup>
     <PackageId>SpiritLabel</PackageId>
-    <Version>0.0.5</Version>
+    <Version>0.1.0</Version>
     <Authors>PrintSpirit</Authors>
     <PackageDescription>A Label Print Tools</PackageDescription>
     <PackageTags>Label;ZPL;Barcode</PackageTags>
