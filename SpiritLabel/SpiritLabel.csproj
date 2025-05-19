@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   
   <PropertyGroup>
     <PackageId>SpiritLabel</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>PrintSpirit</Authors>
     <PackageDescription>A Label Print Tools</PackageDescription>
     <PackageTags>Label;ZPL;Barcode</PackageTags>

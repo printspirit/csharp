@@ -11,7 +11,7 @@ class Program
         };
         
         // 调用打印接口
-        var p = SpiritLabel.OpenPrinter("Spirit Image");
+        var p = SpiritLabel.OpenPrinter("LPT1");
         p.size(500, 300).quality(Qty.Hight);
         p.Print("acae8013-28db-4b77-a500-1a6052633a22", vars);
         p.Close();
